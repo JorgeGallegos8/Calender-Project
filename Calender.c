@@ -14,6 +14,7 @@ typedef struct event{
 //Function Prototypes
 Event* createEvent(char* nTitle, char* nDate, char* nTime, char* nDescription, int nMonthNum);
 void browseEvents(Event* events);
+Event* removeEvent(Event* head, const char* targetName);
 
 void displayEvent(Event* event);
 
