@@ -200,3 +200,41 @@ void displayEvent(Event* event){
     printf("Event Time:%s\n", event->time);
     printf("Event Description:%s\n\n", event->description);
 }
+
+Event* removeEvent(Event* head, const char* targetName) {
+    // If list is empty
+    if (head == NULL) {
+        printf("There are no events to remove.\n");
+        return head;
+    }
+
+    Event* temp = head;
+    Event* prev = NULL;
+
+    // Check if the head is the one to delete
+    if (strcmp(head->name, targetName) == 0) {
+        head = head->next;      
+        free(temp);             
+        printf("Event removed successfully.\n");
+        return head;
+    }
+
+    // Search the list for the event
+    while (temp != NULL && strcmp(temp->name, targetName) != 0) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // Not found
+    if (temp == NULL) {
+        printf("Event not found.\n");
+        return head;
+    }
+
+    // Remove the event
+    prev->next = temp->next;
+    free(temp);
+
+    printf("Event removed successfully.\n");
+    return head;
+}
