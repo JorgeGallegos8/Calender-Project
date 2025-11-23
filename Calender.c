@@ -11,9 +11,11 @@ typedef struct event{
     struct event* next;
 } Event;
 
-//ADDED - Function Prototypes
+//Function Prototypes
 Event* createEvent(char* nTitle, char* nDate, char* nTime, char* nDescription, int nMonthNum);
 void browseEvents(Event* events);
+
+void displayEvent(Event* event);
 
 int main() {
     Event* head = NULL;
@@ -76,9 +78,16 @@ int main() {
                 printf("Event has been added.\n");
                 break;
             case 2:
-                /*browseEvents();
-                NOTE - Not implemented yet
+                /*
+                If there are no events print that there are none,
+                otherwise call browseEvents() to display the events.
                 */
+                if (head == NULL){
+                    printf("\nThere are no events to browse.\n");
+                }
+                else{
+                    browseEvents(head);
+                }
                 break;
             case 3:
                 printf("Exiting calendar. Goodbye!\n");
@@ -90,9 +99,9 @@ int main() {
     return 0;
 }
 
-//ADDED - Function to create and return a new event 
+//Function to create and return a new event 
 Event* createEvent(char* nTitle, char* nDate, char* nTime, char* nDescription, int nMonthNum) { //n means New
-    Event* newEvent = malloc(sizeof(struct event)); //Makes space in the memory for the new event
+    Event* newEvent = malloc(sizeof(Event)); //Makes space in the memory for the new event
 
     strncpy(newEvent->name, nTitle, sizeof(newEvent->name));
     strncpy(newEvent->date, nDate, sizeof(newEvent->date));
@@ -104,29 +113,89 @@ Event* createEvent(char* nTitle, char* nDate, char* nTime, char* nDescription, i
     return newEvent; //Returns the new event's address (pointer)
 }
 
-//ADDED - Function to browse all the events in a certain month
-//NEEDS - logic for checking which month, and function for displaying every event that is in the month
-void browseEvents(Event* events) {
+//Function to browse all the events in a certain month
+void browseEvents(Event* head) {
+    Event* temp = head;
     int month;
     
-    //ADDED - Displays a list of all the months
-    //NEEDS - change the names of each month (1-12), 1 is January and 12 is Decemeber
-    printf("Available Months:\n");
+    //Displays a list of all the months
+    printf("\nSelect a month:\n");
     printf("1.January\n");
-    printf("2.January\n");
-    printf("3.January\n");
-    printf("4.January\n");
-    printf("5.January\n");
-    printf("6.January\n");
-    printf("7.January\n");
-    printf("8.January\n");
-    printf("9.January\n");
-    printf("10.January\n");
-    printf("11.January\n");
-    printf("12.January\n");
-    printf("Select a Month:");
-    scanf("%d", &month);
+    printf("2.February\n");
+    printf("3.March\n");
+    printf("4.April\n");
+    printf("5.May\n");
+    printf("6.June\n");
+    printf("7.July\n");
+    printf("8.August\n");
+    printf("9.September\n");
+    printf("10.October\n");
+    printf("11.November\n");
+    printf("12.December\n");
+    printf("Enter your choice:");
+    //Input validation for selecting the month
+    if(scanf("%d", &month) != 1) {
+        printf("Invalid input.\n");
+        return;
+    }
+    getchar();
+
+    //Prints which month's events are going to be displayed
+    printf("\n");
+    if (month == 1){
+        printf("Events for January:\n\n");
+    } else if (month == 2){
+        printf("Events for February:\n\n");
+    } else if (month == 3){
+        printf("Events for March:\n\n");
+    } else if (month == 4){
+        printf("Events for April:\n\n");
+    } else if (month == 5){
+        printf("Events for May:\n\n");
+    } else if (month == 6){
+        printf("Events for June:\n\n");
+    } else if (month == 7){
+        printf("Events for July:\n\n");
+    } else if (month == 8){
+        printf("Events for August:\n\n");
+    } else if (month == 9){
+        printf("Events for September:\n\n");
+    } else if (month == 10){
+        printf("Events for October:\n\n");
+    } else if (month == 11){
+        printf("Events for November:\n\n");
+    } else if (month == 12){
+        printf("Events for December:\n\n");
+    }
+
+    /*
+    Loops through the linked list, displaying events with a monthNum that 
+    matches the selected month.
+    */
+    int flag = 0;
+    do{
+        if (temp->monthNum == month){
+            displayEvent(temp);
+            flag = 1;
+        }
+        temp = temp->next;
+    } while (temp != NULL);
+
+    /*
+    If no events in the Linked List match the month no events will be displayed, 
+    otherwise print that the events have been displayed.
+    */
+    if (!flag){
+        printf("There are no events for this month.\n");
+    }else{
+        printf("All events for this month have been displayed.\n");
+    }
 }
 
-
-
+//Function used to display events in the Linked List
+void displayEvent(Event* event){
+    printf("Event Name:%s\n", event->name);
+    printf("Event Date:%s\n", event->date);
+    printf("Event Time:%s\n", event->time);
+    printf("Event Description:%s\n\n", event->description);
+}
